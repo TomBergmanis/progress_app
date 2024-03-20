@@ -2,7 +2,7 @@
 <!--  -->
 {% block title %}Add Goal{% endblock %}
 <!--  -->
-<!-- {% load crispy_forms_tags %} -->
+{% load crispy_forms_tags %}
 <!--  -->
 {% block content %}
 <h1>Set Your Goal</h1>
@@ -11,8 +11,7 @@
 <form method="POST">
   {% csrf_token %}
   <!--  -->
-  <!-- {{form|crispy}} -->
-  {{form.as_p}}
+  {{form|crispy}}
   <!--  -->
   <button type="submit" class="btn btn-success">Add Goal</button>
 </form>

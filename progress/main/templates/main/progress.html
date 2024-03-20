@@ -3,7 +3,14 @@
 {% block title %}Progress{% endblock %}
 <!--  -->
 {% block content %}
-<h1>Set Your Goal</h1>
-<p>Progress tracker page</p>
-
+<h1>Check Your Goals</h1>
+<p>List of your goals</p>
+<br />
+<p>View, Edit and Delete Your Goals Below:</p>
+<br />
+<!--  -->
+{% for goal in user.Goal %}
+<p><a href="/{{goal.id}}">{{goal.name}}</a></p>
+{% endfor %}
+<!--  -->
 {% endblock %}
