@@ -10,14 +10,27 @@
 <br />
 <!--  -->
 {% if user.is_authenticated %}
-<!--  -->
-{% for goal in goals %}
-<p><a href="/{{ goal.id }}">{{goal.name}}</a></p>
-{% endfor %}
-<!--  -->
+  <div>
+    <!--  -->
+    {% if goals %}
+    <ul>
+      {% for goal in goals %}
+      <li>{{goal.goal_name}}</li>
+        <p>{{goal.goal_desc}}</p>
+        <p>{{goal.goal_time}}</p>
+
+      
+      {% endfor %}
+    </ul>
+    <!--  -->
+    {% else %}
+    <p>No goals found...</p>
+    {% endif %}
+  </div>
 {% else %}
 <p>Please <a href="/{{login}}">login</a> to view your goals</p>
-<!--  -->
+  <!--  -->
 {% endif %}
+</div>
 <!--  -->
 {% endblock %}
