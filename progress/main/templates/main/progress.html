@@ -9,8 +9,15 @@
 <p>View, Edit and Delete Your Goals Below:</p>
 <br />
 <!--  -->
-{% for goal in user.Goal %}
-<p><a href="/{{goal.id}}">{{goal.name}}</a></p>
+{% if user.is_authenticated %}
+<!--  -->
+{% for goal in goals %}
+<p><a href="/{{ goal.id }}">{{goal.name}}</a></p>
 {% endfor %}
+<!--  -->
+{% else %}
+<p>Please <a href="/{{login}}">login</a> to view your goals</p>
+<!--  -->
+{% endif %}
 <!--  -->
 {% endblock %}

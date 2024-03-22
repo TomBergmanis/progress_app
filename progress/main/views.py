@@ -15,7 +15,7 @@ def home(response):
 @login_required
 def progress(request):
     goals = Goal.objects.filter(user=request.user)
-    return render(request, "main/progress.html", {})
+    return render(request, "main/progress.html", {'goals': goals})
 
 @login_required
 def add_goal(request):
