@@ -3,6 +3,37 @@
 {% block title %}Progress{% endblock %}
 <!--  -->
 {% block content %}
+  <style>
+    .goal-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .goal-card h3 {
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .goal-card p {
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .goal-card .goal-time {
+      font-style: italic;
+      color: #999;
+    }
+
+    .login-link {
+      color: blue;
+      text-decoration: underline;
+    }
+
+    
+  </style>
+
 <h1>Check Your Goals</h1>
 <p>List of your goals</p>
 <br />
@@ -10,16 +41,19 @@
 <br />
 <!--  -->
 {% if user.is_authenticated %}
-  <div>
+  <div class="goals-container">
     <!--  -->
     {% if goals %}
     <ul>
       {% for goal in goals %}
-      <li>{{goal.goal_name}}</li>
-        <p>{{goal.goal_desc}}</p>
-        <p>{{goal.goal_time}}</p>
-
-      
+        <div class="goal-card">
+        <h3>{{goal.goal_name}}</h3>
+            <p><strong>Goal Description:</strong> {{goal.goal_desc}}</p>
+            <p><strong>Total time spent working on goal:</strong> {{goal.goal_time}}</p>
+              <a href=""><i class="fa-solid fa-square-check"></i></a>
+              <a href="{% url 'edit_user_goal' pk=goal.pk %}"><i class="fa-regular fa-pen-to-square"></i></a>
+              <a href=""><i class="fa-solid fa-trash"></i></a>
+        </div>
       {% endfor %}
     </ul>
     <!--  -->
