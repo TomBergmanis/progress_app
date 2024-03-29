@@ -51,8 +51,18 @@
             <p><strong>Goal Description:</strong> {{goal.goal_description}}</p>
             <p><strong>Goal Deadline: </strong> {{goal.goal_deadline}}</p>
             <p><strong>Total Hours Spent: </strong>{{ goal.total_hours_spent }}</p>
-            <p>You can log your hours here: <a href="{% url 'edit_user_goal' pk=goal.pk %}"><i class="fa-regular fa-pen-to-square"></i></a></p>
-              
+            <br>
+               <!-- Progress Bar -->
+               <div><p><strong>Progress Percentage: </strong></p></div><br>
+               <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: {{ goal.progress_percentage }}%;" aria-valuenow="{{ goal.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ goal.progress_percentage }}%</div>
+              </div>
+              <br>
+              <!-- Milestones -->
+              <p><strong>Milestones:</strong></p>        
+                  <p>{{ goal.target_hours }} Hours</p>
+              <br>
+              <p>You can log your hours here: <a href="{% url 'edit_user_goal' pk=goal.pk %}"><i class="fa-regular fa-pen-to-square"></i></a></p>
         </div>
       {% endfor %}
     </ul>

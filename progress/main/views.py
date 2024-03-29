@@ -4,8 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.contrib.auth.decorators import login_required 
-from .models import Goal, GoalLog, models
+from .models import Goal, GoalLog
 from django.db.models import Sum 
+from django.db.models.functions import TruncWeek
 from .forms import GoalForm, EditUserGoalForm
 from django.urls import reverse
 
@@ -74,10 +75,17 @@ class UpdateUserGoals(generic.UpdateView):
  # User can see their goals as a list 
 @login_required
 def progress(request):
+    
     goals = Goal.objects.filter(user=request.user)
     for goal in goals:
         total_hours_spent = GoalLog.objects.filter(goal=goal).aggregate(Sum('hours_logged'))['hours_logged__sum']
         goal.total_hours_spent = total_hours_spent if total_hours_spent else 0 # this works for some reason dont change until you figure it out
+        
+        if total_hours_spent is not None and goal.target_hours is not None and goal.target_hours > 0:
+            goal.progress_percentage = (total_hours_spent / goal.target_hours) * 100 
+        else:
+            goal.progress_percentage = 0
+
 
     return render(request, "main/progress.html", {'goals': goals})
   

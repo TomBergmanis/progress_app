@@ -13,7 +13,8 @@ class Goal(models.Model):
     goal_name = models.CharField(max_length=100)
     goal_description = models.TextField()
     goal_deadline = models.DateTimeField(help_text="Add a date (mm/dd/yyyy) and a time (00:00) here.", null=True)
-
+    target_hours = models.IntegerField(default=0)
+    
     def __str__(self):
         return self.goal_name
 
