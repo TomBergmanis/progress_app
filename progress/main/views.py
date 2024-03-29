@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadReque
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.contrib.auth.decorators import login_required 
-from .models import Homepage, Goal, Progress
+from .models import Goal, GoalLog, models
+from django.db.models import Sum 
 from .forms import GoalForm, EditUserGoalForm
 from django.urls import reverse
 
@@ -63,32 +64,21 @@ class UpdateUserGoals(generic.UpdateView):
         goal = form.save(commit=False)
         goal.user = self.request.user
         goal.save()
+
+        hours_logged = form.cleaned_data.get('hours_logged')
+        if hours_logged is not None:
+            GoalLog.objects.create(goal=goal, hours_logged=hours_logged)
+
         return super().form_valid(form)
 
  # User can see their goals as a list 
 @login_required
 def progress(request):
     goals = Goal.objects.filter(user=request.user)
-    return render(request, "main/progress.html", {'goals': goals})
+    for goal in goals:
+        total_hours_spent = GoalLog.objects.filter(goal=goal).aggregate(Sum('hours_logged'))['hours_logged__sum']
+        goal.total_hours_spent = total_hours_spent if total_hours_spent else 0 # this works for some reason dont change until you figure it out
 
-# @login_required
-# def log_hours(request, goal_id):
-#     if request.method == "POST":
-#         goal = get_object_or_404(Goal, pk=goal_id)
-#         hours_logged = request.POST.get('hours_logged')
-#         if hours_logged is not None:
-#             try:
-#                 hours_logged = float(hours_logged)
-#                 if hours_logged >= 0:
-#                     progress, created = Progress.objects.get_or_create(goal=goal)
-#                     progress.hours_logged += hours_logged
-#                     progress.save()
-#                     return redirect('progress')
-#                 else:
-#                     return HttpResponseBadRequest("Hours logged must be a non-negative number")
-#             except ValueError:
-#                 return HttpResponseBadRequest("Invalid input for hours logged")
-#         else:
-#             return HttpResponseBadRequest("Hours logged must be provided")
-#     else:
-#         return HttpResponseBadRequest("Invalid request method")
+    return render(request, "main/progress.html", {'goals': goals})
+  
+

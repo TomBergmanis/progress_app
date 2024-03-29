@@ -6,15 +6,17 @@ class GoalForm(forms.ModelForm):
 
     class Meta:
         model = Goal
-        fields = ["goal_name", "goal_description", "goal_time"]
+        fields = ["goal_name", "goal_description", "goal_deadline"]
 
 class EditUserGoalForm(forms.ModelForm):
+    hours_logged = forms.DecimalField(label='Hours Spent', max_digits=10, decimal_places=2, required=False)
     
+
     class Meta:
         model = Goal
-        fields = ["goal_name", "goal_description", "goal_time"]
+        fields = ["goal_name", "goal_description", "goal_deadline"]
         widgets = {
             'goal_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Enter goal title"}),
             'goal_description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Enter goal description"}),
-            'goal_time': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': "Time spent on the goal"}),
+            'goal_deadline': forms.DateTimeInput(attrs={'class': 'form-control', 'placeholder': "deadline date"}),
         }

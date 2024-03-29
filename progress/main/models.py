@@ -12,10 +12,15 @@ class Goal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     goal_name = models.CharField(max_length=100)
     goal_description = models.TextField()
-    goal_time = models.IntegerField(help_text="Enter the amount of time you spent on this goal today: ", default=0)
+    goal_deadline = models.DateTimeField(help_text="Add a date (mm/dd/yyyy) and a time (00:00) here.", null=True)
 
     def __str__(self):
         return self.goal_name
+
+class GoalLog(models.Model):
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
+    hours_logged = models.DecimalField(max_digits=10, decimal_places=2)
+    date_logged = models.DateField(auto_now_add=True)
 
 class Progress(models.Model):
     goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
@@ -23,3 +28,4 @@ class Progress(models.Model):
     
     def __str__(self):
         return self.name 
+    
