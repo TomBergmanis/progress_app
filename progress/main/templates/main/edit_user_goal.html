@@ -15,5 +15,13 @@
   <!--  -->
   <button type="submit" class="btn btn-success">Update Goal</button>
 </form>
+<br />
+<form method="POST" action="{% url 'delete_goal' goal.pk %}">
+  {% csrf_token %}
+  <!--  -->
+  <input type="hidden" name="next" value="{% url 'progress' %}" />
+  <!--  -->
+  <button type="submit" class="btn btn-danger">Delete Goal</button>
+</form>
 <!--  -->
 {% endblock %}

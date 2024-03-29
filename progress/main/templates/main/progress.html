@@ -47,12 +47,11 @@
     <ul>
       {% for goal in goals %}
         <div class="goal-card">
-        <h3>{{goal.goal_name}}</h3>
-            <p><strong>Goal Description:</strong> {{goal.goal_desc}}</p>
+        <h3>{{ goal.goal_name }}</h3>
+            <p><strong>Goal Description:</strong> {{goal.goal_description}}</p>
             <p><strong>Total time spent working on goal:</strong> {{goal.goal_time}}</p>
               <a href=""><i class="fa-solid fa-square-check"></i></a>
               <a href="{% url 'edit_user_goal' pk=goal.pk %}"><i class="fa-regular fa-pen-to-square"></i></a>
-              <a href=""><i class="fa-solid fa-trash"></i></a>
         </div>
       {% endfor %}
     </ul>

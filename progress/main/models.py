@@ -18,7 +18,7 @@ class Goal(models.Model):
         return self.goal_name
 
 class Progress(models.Model):
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, default='Placeholder String')
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     
     def __str__(self):
