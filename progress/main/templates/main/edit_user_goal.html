@@ -1,27 +1,32 @@
 {% extends 'main/base.html' %}
-
-<!-- -->
-
+<!--  -->
 {% block title %}Edit Goals{% endblock %}
 <!--  -->
 {% load crispy_forms_tags %}
 <!--  -->
 {% block content %}
+<!--  -->
 <h2>Edit Your Goals Here</h2>
 <form method="POST">
   {% csrf_token %}
   <!--  -->
   {{form|crispy}}
-  <!--  -->
-  <button type="submit" class="btn btn-success">Update Goal</button>
+  <div class="form-group row justify-content-end">
+    <div class="col-sm-2">
+      <button type="submit" class="btn btn-success">Update Goal</button>
+    </div>
+    <div class="col-sm-2">
+      <button
+        type="submit"
+        formaction="{% url 'delete_goal' goal.pk %}"
+        class="btn btn-danger"
+      >
+        Delete Goal
+      </button>
+    </div>
+  </div>
 </form>
-<br />
-<form method="POST" action="{% url 'delete_goal' goal.pk %}">
-  {% csrf_token %}
-  <!--  -->
-  <input type="hidden" name="next" value="{% url 'progress' %}" />
-  <!--  -->
-  <button type="submit" class="btn btn-danger">Delete Goal</button>
-</form>
-<!--  -->
+<!-- add a pop up warning so that the user can confirm if 
+     they want to delete the goal they are viewing -->
+
 {% endblock %}
