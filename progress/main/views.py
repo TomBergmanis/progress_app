@@ -1,14 +1,13 @@
 from typing import Any
 from django.db.models.base import Model as Model
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.contrib.auth.decorators import login_required 
 from .models import Goal, GoalLog
 from django.db.models import Sum 
-from django.db.models.functions import TruncWeek
 from .forms import GoalForm, EditUserGoalForm
-from django.urls import reverse
+from django.utils import timezone
+from datetime import timedelta
 
 
 # Create your views here.
@@ -72,21 +71,40 @@ class UpdateUserGoals(generic.UpdateView):
 
         return super().form_valid(form)
 
- # User can see their goals as a list 
+# User can see their goals as a list 
 @login_required
 def progress(request):
+    # Get the current user
+    user = request.user
     
-    goals = Goal.objects.filter(user=request.user)
+    # Calculate the start and end of the current week
+    current_date = timezone.now()
+    start_of_week = current_date - timedelta(days=current_date.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+
+    # Query the user's goals
+    goals = Goal.objects.filter(user=user)
+
+    # Initialize a dictionary to store the weekly total for each goal
+    weekly_totals = {}
+
+    # Calculate weekly totals for each goal
+    for goal in goals:
+        # Query the GoalLog entries for the current week for the specific goal
+        weekly_logs = GoalLog.objects.filter(goal=goal, date_logged__gte=start_of_week, date_logged__lte=end_of_week)
+        
+        # Aggregate the hours_logged
+        weekly_total = weekly_logs.aggregate(total_hours=Sum('hours_logged')).get('total_hours') or 0
+        goal.weekly_totals = weekly_total
+        print(weekly_total)
+
     for goal in goals:
         total_hours_spent = GoalLog.objects.filter(goal=goal).aggregate(Sum('hours_logged'))['hours_logged__sum']
-        goal.total_hours_spent = total_hours_spent if total_hours_spent else 0 # this works for some reason dont change until you figure it out
+        goal.total_hours_spent = total_hours_spent if total_hours_spent else 0 
         
         if total_hours_spent is not None and goal.target_hours is not None and goal.target_hours > 0:
             goal.progress_percentage = (total_hours_spent / goal.target_hours) * 100 
         else:
             goal.progress_percentage = 0
 
-
-    return render(request, "main/progress.html", {'goals': goals})
-  
-
+    return render(request, "main/progress.html", {'goals': goals, 'weekly_totals': weekly_totals})
