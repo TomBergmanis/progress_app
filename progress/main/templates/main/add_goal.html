@@ -5,14 +5,34 @@
 {% load crispy_forms_tags %}
 <!--  -->
 {% block content %}
+
+<style>
+  .add-goal {
+    background-color: #f9f9f9;
+    padding: 7px;
+    border: 1px black solid;
+    border-radius: 5px;
+    box-shadow: 2.5px 2.5px lightgray;
+  }
+  .goal-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+  }
+  .form-group {
+    font-weight: bold;
+  }
+</style>
 <h1>Set Your Goal</h1>
 <!-- Form to Add New Goal -->
-<h2>Add New Goal</h2>
-<form method="POST">
+<h2>Add A New Goal:</h2>
+<form class="add-goal" method="POST">
   {% csrf_token %}
   <!--  -->
   {{form|crispy}}
   <!--  -->
-  <button type="submit" class="btn btn-success">Add Goal</button>
+  <div class="goal-btn">
+    <button type="submit" class="btn btn-success">Add Goal +</button>
+  </div>
 </form>
 {% endblock %}

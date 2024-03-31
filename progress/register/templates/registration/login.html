@@ -5,6 +5,12 @@
 {% load crispy_forms_tags%}
 <!--  -->
 {% block content %}
+<style>
+  .form-group {
+    font-weight: bold;
+    font-size: 20px;
+  }
+</style>
 <form method="POST" class="form-group">
   <!--  -->
   {% csrf_token %}

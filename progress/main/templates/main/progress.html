@@ -4,16 +4,18 @@
 <!--  -->
 {% block content %}
   <style>
+
     .goal-card {
-      border: 1px solid #ccc;
+      border: 1px solid #060606;
       border-radius: 10px;
-      padding: 10px;
+      padding: 15px;
       margin-bottom: 10px;
       background-color: #f9f9f9;
+      box-shadow: 2.5px 2.5px lightgray;
     }
 
     .goal-card h3 {
-      color: #333;
+      color: #333;x
       margin-bottom: 5px;
     }
 
@@ -31,14 +33,11 @@
       text-decoration: underline;
     }
 
-    
   </style>
 
-<h1>Check Your Goals</h1>
-<p>List of your goals</p>
+<h1>Check Out Your Goals</h1>
 <br />
 <p>View, Edit and Delete Your Goals Below:</p>
-<br />
 <!--  -->
 {% if user.is_authenticated %}
   <div class="goals-container">
@@ -47,7 +46,7 @@
     <ul>
       {% for goal in goals %}
         <div class="goal-card">
-        <h3>{{ goal.goal_name }}</h3>
+        <h3>{{ goal.goal_name }} - </h3>
             <p><strong>Goal Description:</strong> {{goal.goal_description}}</p>
             <p><strong>Goal Deadline: </strong> {{goal.goal_deadline}}</p>
             <p><strong>Total Hours Spent: </strong>{{ goal.total_hours_spent }}</p>
