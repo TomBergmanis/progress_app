@@ -23,16 +23,16 @@
     font-weight: bold;
   }
 </style>
-<h1>Set Your Goal</h1>
+<h1>SET YOUR GOAL</h1>
 <!-- Form to Add New Goal -->
-<h2>Add A New Goal:</h2>
+<h2>Add a New Goal:</h2>
 <form class="add-goal" method="POST">
   {% csrf_token %}
   <!--  -->
   {{form|crispy}}
   <!--  -->
   <div class="goal-btn">
-    <button type="submit" class="btn btn-success">Add Goal +</button>
+    <button type="submit" class="btn btn-success">Add Goal</button>
   </div>
 </form>
 {% endblock %}
